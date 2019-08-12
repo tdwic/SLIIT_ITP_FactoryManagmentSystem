@@ -314,7 +314,7 @@ public class MainOrderInterface {
 		});
 		btnNewButton_1.setBounds(10, 344, 113, 23);
 		frame.getContentPane().add(btnNewButton_1);
-		
+		//s
 		JButton btnSearchClient = new JButton("Search Client");
 		btnSearchClient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
