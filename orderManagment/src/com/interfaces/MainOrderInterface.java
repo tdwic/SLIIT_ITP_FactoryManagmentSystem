@@ -36,6 +36,8 @@ import com.toedter.calendar.JDateChooser;
 import javax.swing.JScrollPane;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import org.apache.taglibs.standard.lang.jstl.AndOperator;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
 import javax.swing.JSplitPane;
@@ -49,14 +51,14 @@ public class MainOrderInterface {
 	private PreparedStatement preStatement ;
 	
 	private JFrame frame;
-	private JTextField txt7;
-	private JTextField txt6;
-	private JTextField txt5;
-	private JTextField txt4;
-	private JTextField txt3;
-	private JTextField txt2;
-	private JTextField txt1;
-	private JTextField txt8;
+	private JTextField emailAddress;
+	private JTextField contactNumber;
+	private JTextField nicNo;
+	private JTextField companyName;
+	private JTextField lastName;
+	private JTextField firstName;
+	private JTextField clientID;
+	private JTextField address;
 	private JTextField txtOrderID;
 	private JTextField textField_8;
 	private JTextField quantity1;
@@ -64,18 +66,34 @@ public class MainOrderInterface {
 	private JTextField Location;
 	private JTextField Remark;
 	private JTable table;
-
+	private JTextField textField;
+	
+	//Object Declaration
+	
 	Client client = new Client();
 	Order order = new Order();
 	ClientRecordsServices clientRecordsServices = new ClientRecordsServices();
 	OrderRecordsServices orderRecordsServices = new OrderRecordsServices();
-	
 	JDateChooser orderDate = new JDateChooser();
+	
+	//Object Declaration
 	
 	
 	private void viewAllOrders() {
 		try {
-			String selectClient = "select * from client";
+			String selectClient = "select * from order";
+			connection = DbConnect.getDBConnection();
+			preStatement = connection.prepareStatement(selectClient);
+			ResultSet resultSet = preStatement.executeQuery();
+			table.setModel(DbUtils.resultSetToTableModel(resultSet));
+		} catch (Exception e) {
+			
+		}
+	}
+	
+	public void viewAllClients() {
+		try {
+			String selectClient = "select * from customer";
 			connection = DbConnect.getDBConnection();
 			preStatement = connection.prepareStatement(selectClient);
 			ResultSet resultSet = preStatement.executeQuery();
@@ -88,14 +106,14 @@ public class MainOrderInterface {
 	
 	private void textSetClient() {
 
-		client.setClientId(txt1.getText());
-		client.setFirstName(txt2.getText());
-		client.setLastName(txt3.getText());
-		client.setCompanyName(txt4.getText());
-		client.setNicNo(txt5.getText());
-		client.setContactNo(txt6.getText());
-		client.setEmailAddress(txt7.getText());
-		client.setClientAddress(txt8.getText());
+		client.setClientId(clientID.getText());
+		client.setFirstName(firstName.getText());
+		client.setLastName(lastName.getText());
+		client.setCompanyName(companyName.getText());
+		client.setNicNo(nicNo.getText());
+		client.setContactNo(contactNumber.getText());
+		client.setEmailAddress(emailAddress.getText());
+		client.setClientAddress(address.getText());
 	}
 	
 	private void textSetOrder() {
@@ -114,40 +132,41 @@ public class MainOrderInterface {
 	private void tableSelectItemClient() {
 		JOptionPane.showMessageDialog(null, "CLient Only");
 		int rowNumber = table.getSelectedRow();
-		txt1.setText(table.getValueAt(rowNumber, 0).toString());
-		txt2.setText(table.getValueAt(rowNumber, 1).toString());
-		txt3.setText(table.getValueAt(rowNumber, 2).toString());
-		txt4.setText(table.getValueAt(rowNumber, 3).toString());
-		txt5.setText(table.getValueAt(rowNumber, 4).toString());
-		txt6.setText(table.getValueAt(rowNumber, 5).toString());
-		txt7.setText(table.getValueAt(rowNumber, 6).toString());
-		txt8.setText(table.getValueAt(rowNumber, 7).toString());
+		     clientID.setText(table.getValueAt(rowNumber, 0).toString());
+		    firstName.setText(table.getValueAt(rowNumber, 1).toString());
+		     lastName.setText(table.getValueAt(rowNumber, 2).toString());
+		  companyName.setText(table.getValueAt(rowNumber, 3).toString());
+		        nicNo.setText(table.getValueAt(rowNumber, 4).toString());
+		contactNumber.setText(table.getValueAt(rowNumber, 5).toString());
+		 emailAddress.setText(table.getValueAt(rowNumber, 6).toString());
+		      address.setText(table.getValueAt(rowNumber, 7).toString());
 	}
 	
 	private void tableSelectItemOrder() {
 		JOptionPane.showMessageDialog(null, "Order Only");
 		int rowNumber = table.getSelectedRow();
-		txt1.setText(table.getValueAt(rowNumber, 0).toString());
-		txt2.setText(table.getValueAt(rowNumber, 1).toString());
-		txt3.setText(table.getValueAt(rowNumber, 2).toString());
-		txt4.setText(table.getValueAt(rowNumber, 3).toString());
-		txt5.setText(table.getValueAt(rowNumber, 4).toString());
-		txt6.setText(table.getValueAt(rowNumber, 5).toString());
-		txt7.setText(table.getValueAt(rowNumber, 6).toString());
-		txt8.setText(table.getValueAt(rowNumber, 7).toString());
+		
+		   clientID.setText(table.getValueAt(rowNumber, 0).toString());
+		  firstName.setText(table.getValueAt(rowNumber, 1).toString());
+		   lastName.setText(table.getValueAt(rowNumber, 2).toString());
+		companyName.setText(table.getValueAt(rowNumber, 3).toString());
+		      nicNo.setText(table.getValueAt(rowNumber, 4).toString());
+	  contactNumber.setText(table.getValueAt(rowNumber, 5).toString());
+	   emailAddress.setText(table.getValueAt(rowNumber, 6).toString());
+		    address.setText(table.getValueAt(rowNumber, 7).toString());
 	}
 	
 	private void allOrderItems() {
 		JOptionPane.showMessageDialog(null, "Both");
 		int rowNumber = table.getSelectedRow();
-		txt1.setText(table.getValueAt(rowNumber, 0).toString());
-		txt2.setText(table.getValueAt(rowNumber, 1).toString());
-		txt3.setText(table.getValueAt(rowNumber, 2).toString());
-		txt4.setText(table.getValueAt(rowNumber, 3).toString());
-		txt5.setText(table.getValueAt(rowNumber, 4).toString());
-		txt6.setText(table.getValueAt(rowNumber, 5).toString());
-		txt7.setText(table.getValueAt(rowNumber, 6).toString());
-		txt8.setText(table.getValueAt(rowNumber, 7).toString());
+		   clientID.setText(table.getValueAt(rowNumber, 0).toString());
+		  firstName.setText(table.getValueAt(rowNumber, 1).toString());
+		   lastName.setText(table.getValueAt(rowNumber, 2).toString());
+		companyName.setText(table.getValueAt(rowNumber, 3).toString());
+		      nicNo.setText(table.getValueAt(rowNumber, 4).toString());
+	  contactNumber.setText(table.getValueAt(rowNumber, 5).toString());
+	   emailAddress.setText(table.getValueAt(rowNumber, 6).toString());
+		    address.setText(table.getValueAt(rowNumber, 7).toString());
 	}
 	
 	
@@ -202,10 +221,10 @@ public class MainOrderInterface {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		txt7 = new JTextField();
-		txt7.setColumns(10);
-		txt7.setBounds(143, 208, 216, 20);
-		frame.getContentPane().add(txt7);
+		emailAddress = new JTextField();
+		emailAddress.setColumns(10);
+		emailAddress.setBounds(143, 208, 216, 20);
+		frame.getContentPane().add(emailAddress);
 		
 		JLabel label = new JLabel("Email");
 		label.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -217,15 +236,15 @@ public class MainOrderInterface {
 		label_1.setBounds(10, 180, 94, 14);
 		frame.getContentPane().add(label_1);
 		
-		txt6 = new JTextField();
-		txt6.setColumns(10);
-		txt6.setBounds(143, 183, 216, 20);
-		frame.getContentPane().add(txt6);
+		contactNumber = new JTextField();
+		contactNumber.setColumns(10);
+		contactNumber.setBounds(143, 183, 216, 20);
+		frame.getContentPane().add(contactNumber);
 		
-		txt5 = new JTextField();
-		txt5.setColumns(10);
-		txt5.setBounds(143, 158, 216, 20);
-		frame.getContentPane().add(txt5);
+		nicNo = new JTextField();
+		nicNo.setColumns(10);
+		nicNo.setBounds(143, 158, 216, 20);
+		frame.getContentPane().add(nicNo);
 		
 		JLabel label_2 = new JLabel("NIC No");
 		label_2.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -237,16 +256,16 @@ public class MainOrderInterface {
 		label_3.setBounds(10, 133, 113, 14);
 		frame.getContentPane().add(label_3);
 		
-		txt4 = new JTextField();
-		txt4.setText("None");
-		txt4.setColumns(10);
-		txt4.setBounds(143, 133, 216, 20);
-		frame.getContentPane().add(txt4);
+		companyName = new JTextField();
+		companyName.setText("None");
+		companyName.setColumns(10);
+		companyName.setBounds(143, 133, 216, 20);
+		frame.getContentPane().add(companyName);
 		
-		txt3 = new JTextField();
-		txt3.setColumns(10);
-		txt3.setBounds(143, 108, 216, 20);
-		frame.getContentPane().add(txt3);
+		lastName = new JTextField();
+		lastName.setColumns(10);
+		lastName.setBounds(143, 108, 216, 20);
+		frame.getContentPane().add(lastName);
 		
 		JLabel label_4 = new JLabel("Last Name");
 		label_4.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -258,25 +277,25 @@ public class MainOrderInterface {
 		label_5.setBounds(10, 83, 86, 14);
 		frame.getContentPane().add(label_5);
 		
-		txt2 = new JTextField();
-		txt2.setColumns(10);
-		txt2.setBounds(143, 83, 216, 20);
-		frame.getContentPane().add(txt2);
+		firstName = new JTextField();
+		firstName.setColumns(10);
+		firstName.setBounds(143, 83, 216, 20);
+		frame.getContentPane().add(firstName);
 		
-		txt1 = new JTextField();
-		txt1.setColumns(10);
-		txt1.setBounds(143, 58, 216, 20);
-		frame.getContentPane().add(txt1);
+		clientID = new JTextField();
+		clientID.setColumns(10);
+		clientID.setBounds(143, 58, 216, 20);
+		frame.getContentPane().add(clientID);
 		
 		JLabel label_6 = new JLabel("Client ID");
 		label_6.setFont(new Font("Tahoma", Font.BOLD, 13));
 		label_6.setBounds(10, 58, 86, 14);
 		frame.getContentPane().add(label_6);
 		
-		txt8 = new JTextField();
-		txt8.setColumns(10);
-		txt8.setBounds(143, 233, 216, 20);
-		frame.getContentPane().add(txt8);
+		address = new JTextField();
+		address.setColumns(10);
+		address.setBounds(143, 233, 216, 20);
+		frame.getContentPane().add(address);
 		
 		JLabel lblAddress = new JLabel("Address");
 		lblAddress.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -288,7 +307,8 @@ public class MainOrderInterface {
 			public void actionPerformed(ActionEvent arg0) {
 				refreshValue = 2;
 				textSetClient();
-				clientRecordsServices.updateClient(txt1.getText(), client);
+				clientRecordsServices.updateClient(clientID.getText(), client);
+				viewAllClients();
 		
 			}
 		});
@@ -298,9 +318,26 @@ public class MainOrderInterface {
 		JButton btnSearchClient = new JButton("Search Client");
 		btnSearchClient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if (clientID.getText().equals("") && firstName.getText().equals("") && lastName.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Please Enter 'ClientID','First Name' or 'Last Name' to proceed the search...");
+				} else if (firstName.getText().equals("") && lastName.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Client ID onlly");
+					table.setModel(DbUtils.resultSetToTableModel(clientRecordsServices.searchByID(clientID.getText())));
+				} else if (clientID.getText().equals("") && lastName.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "First Name Only");
+					table.setModel(DbUtils.resultSetToTableModel(clientRecordsServices.searchByFName(firstName.getText())));
+				} else if (clientID.getText().equals("") && firstName.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Last Name Only");
+					table.setModel(DbUtils.resultSetToTableModel(clientRecordsServices.searchByLName(lastName.getText())));
+				} else {
+					JOptionPane.showMessageDialog(null, "Use Only One Field to search");
+					clientID.setText("");
+					firstName.setText("");
+					lastName.setText("");
+				}
 				refreshValue = 3;
 				textSetClient();	
-				//clientRecordsServices.removeCLient(txt1.getText());
+				
 				
 			}
 		});
@@ -467,6 +504,7 @@ public class MainOrderInterface {
 				refreshValue = 1;
 				textSetClient();	
 				clientRecordsServices.addClient(client);
+				viewAllClients();
 
 			}
 		});
@@ -503,7 +541,8 @@ public class MainOrderInterface {
 		btnRemoveClient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				refreshValue = 4;
-				clientRecordsServices.removeCLient(txt1.getText());
+				clientRecordsServices.removeCLient(clientID.getText());
+				viewAllClients();
 			}
 
 		});
@@ -550,9 +589,14 @@ public class MainOrderInterface {
 		scrollPane.setViewportView(table);
 		
 		JComboBox cmbProductType = new JComboBox();
-		cmbProductType.setBounds(550, 83, 209, 20);
+		cmbProductType.setBounds(550, 83, 137, 20);
 		frame.getContentPane().add(cmbProductType);
-		frame.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{comboBox_2, textField_8, frame.getContentPane(), txt7, label, label_1, txt6, txt5, label_2, label_3, txt4, txt3, label_4, label_5, txt2, txt1, label_6, txt8, btnQuichSearch, lblAddress, btnNewButton_1, btnSearchClient, txtOrderID, lblOrderId, lblOrderType, lblOrderDate, lblDayOfNeed, lblDayOfComplete, lblSuperviserId, btnNewButton_2, btnNewButton_3, btnNewButton_4, cmbSuperID, lblProductType, orderDate, orderDate.getCalendarButton(), dayOfNeed, dayOfNeed.getCalendarButton(), dayOfComplete, dayOfComplete.getCalendarButton(), lblAmount, lblAmount_1, quantity1, lblAvailability, lblTransportType, cmpTransport, lblRemark, Location, btnNewButton, btnViewAllOrders, btnRefresh, btnRemoveClient, btnNewButton_5, Remark, label_7, lblColor, cmbColor, btnNewButton_6}));
+		
+		textField = new JTextField();
+		textField.setBounds(697, 81, 62, 22);
+		frame.getContentPane().add(textField);
+		textField.setColumns(10);
+		frame.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{comboBox_2, textField_8, frame.getContentPane(), emailAddress, label, label_1, contactNumber, nicNo, label_2, label_3, companyName, lastName, label_4, label_5, firstName, clientID, label_6, address, btnQuichSearch, lblAddress, btnNewButton_1, btnSearchClient, txtOrderID, lblOrderId, lblOrderType, lblOrderDate, lblDayOfNeed, lblDayOfComplete, lblSuperviserId, btnNewButton_2, btnNewButton_3, btnNewButton_4, cmbSuperID, lblProductType, orderDate, orderDate.getCalendarButton(), dayOfNeed, dayOfNeed.getCalendarButton(), dayOfComplete, dayOfComplete.getCalendarButton(), lblAmount, lblAmount_1, quantity1, lblAvailability, lblTransportType, cmpTransport, lblRemark, Location, btnNewButton, btnViewAllOrders, btnRefresh, btnRemoveClient, btnNewButton_5, Remark, label_7, lblColor, cmbColor, btnNewButton_6}));
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -568,7 +612,4 @@ public class MainOrderInterface {
 			}
 		});
 	}
-	
-	
-	
 }

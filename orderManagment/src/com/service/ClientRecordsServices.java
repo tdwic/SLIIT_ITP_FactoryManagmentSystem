@@ -2,22 +2,27 @@ package com.service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+
+import com.interfaces.MainOrderInterface;
 import com.model.Client;
 import com.util.DbConnect;
+
+import net.proteanit.sql.DbUtils;
 
 public class ClientRecordsServices {
 	
 	private static Connection connection ;
 	private PreparedStatement preStatement ;
-	
+
 
 	
 	public void addClient(Client client) {
 		try {
 			connection = DbConnect.getDBConnection();
-			String addClient ="insert into client (clientId,fname,lname,company,nic,contact,email,address) values (?,?,?, ?, ?, ?, ?, ?)"; 
+			String addClient ="insert into customer (clientID,FName,LName,companyName,NICNo,ContactNo,Email,Address) values (?,?,?, ?, ?, ?, ?, ?)"; 
 			
 			preStatement = connection.prepareStatement(addClient);
 			
@@ -31,11 +36,11 @@ public class ClientRecordsServices {
 			preStatement.setString(8, client.getClientAddress());
 			
 			preStatement.executeUpdate() ;
-			JOptionPane.showMessageDialog(null, "Record Inserted Sucessfully....");
+			JOptionPane.showMessageDialog(null, "Record Inserted Sucessfully....");			
 			connection.commit();
 			
 		} catch(SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-			JOptionPane.showMessageDialog(null, "Error....");
+
 		}finally {
 			try {
 				if (preStatement != null) {
@@ -58,7 +63,7 @@ public class ClientRecordsServices {
 		try {
 			
 			connection = DbConnect.getDBConnection();
-			String updateClient = "UPDATE ordermanagement.client SET  fname = '"+client.getFirstName()+"', lname = '"+client.getLastName()+"', company = '"+client.getCompanyName()+"', nic = '"+client.getNicNo()+"', contact = '"+client.getContactNo()+"', email = '"+client.getEmailAddress()+"', address = '"+client.getClientAddress()+"' WHERE (clientId = '"+clientID+"')";
+			String updateClient = "UPDATE unic.customer SET  FName = '"+client.getFirstName()+"', LName = '"+client.getLastName()+"', companyName = '"+client.getCompanyName()+"', NICNo = '"+client.getNicNo()+"', ContactNo = '"+client.getContactNo()+"', Email = '"+client.getEmailAddress()+"', Address = '"+client.getClientAddress()+"' WHERE (clientID = '"+clientID+"')";
 	
 			
 			preStatement = connection.prepareStatement(updateClient);
@@ -89,7 +94,7 @@ public class ClientRecordsServices {
 		try {
 			connection = DbConnect.getDBConnection();
 			
-			String deleteClient = "delete from client where client.clientId = ?";
+			String deleteClient = "delete from customer where customer.clientID = ?";
 			
 			preStatement = connection.prepareStatement(deleteClient);
 			
@@ -115,8 +120,44 @@ public class ClientRecordsServices {
 		
 	}
 	
+	public ResultSet searchByID(String clientID) {
+		try {
+			String selectClient = "SELECT clientID,FName,LName,companyName,NICNo,ContactNo,Email,Address FROM unic.customer where clientID = '"+clientID+"';";
+			connection = DbConnect.getDBConnection();
+			preStatement = connection.prepareStatement(selectClient);
+			ResultSet resultSet = preStatement.executeQuery();
+			return resultSet;
+		} catch (Exception e) {
+			return null;
+		}
+				
+	}
 	
+	public ResultSet searchByFName(String firstName) {
+		try {
+			String selectClient = "SELECT clientID,FName,LName,companyName,NICNo,ContactNo,Email,Address FROM unic.customer where FName = '"+firstName+"';";
+			connection = DbConnect.getDBConnection();
+			preStatement = connection.prepareStatement(selectClient);
+			ResultSet resultSet = preStatement.executeQuery();
+			return resultSet;
+		} catch (Exception e) {
+			return null;
+		}
+				
+	}
 	
-	
+	public ResultSet searchByLName(String lastName) {
+		try {
+			String selectClient = "SELECT clientID,FName,LName,companyName,NICNo,ContactNo,Email,Address FROM unic.customer where LName = '"+lastName+"';";
+			connection = DbConnect.getDBConnection();
+			preStatement = connection.prepareStatement(selectClient);
+			ResultSet resultSet = preStatement.executeQuery();
+			return resultSet;
+		} catch (Exception e) {
+			return null;
+		}
+				
+	}
+		
 	
 }
