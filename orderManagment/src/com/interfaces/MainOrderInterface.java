@@ -36,8 +36,6 @@ import com.toedter.calendar.JDateChooser;
 import javax.swing.JScrollPane;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import org.apache.taglibs.standard.lang.jstl.AndOperator;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
 import javax.swing.JSplitPane;
